@@ -1,0 +1,61 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'  // You only need this line here
+}
+
+android {
+    namespace = "com.example.yumm_food"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = "25.1.8937393"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId = "com.example.yumm_food"
+        minSdk = 25
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug  // Make sure to configure your release signing
+        }
+    }
+
+    configurations {
+        all {
+            exclude group: 'com.google.android.gms', module: 'play-services' // You can remove this unless you have specific needs
+        }
+    }
+
+    flutter {
+        source = "../.."
+    }
+
+    dependencies {
+        // Firebase BOM allows you to manage the versions of Firebase libraries in a single place
+        implementation platform("com.google.firebase:firebase-bom:33.5.1")
+        implementation 'com.google.firebase:firebase-auth-ktx'   // For Firebase Auth
+        implementation 'com.google.firebase:firebase-firestore-ktx' // For Firestore (if you use Firestore)
+
+        // Ensure you add other Firebase services only if you use them
+        implementation 'com.google.android.gms:play-services-auth:20.2.0'
+        implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    }
+}
